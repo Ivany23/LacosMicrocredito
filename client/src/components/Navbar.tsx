@@ -10,13 +10,28 @@ export function Navbar() {
   const { user, logout } = useAuth();
 
   const navLinks = [
-    { name: "Início", href: "/" },
-    { name: "Sobre Nós", href: "/about" },
-    { name: "Serviços", href: "/services" },
-    { name: "Simulador", href: "/simulator" },
-    { name: "Localizações", href: "/locations" },
-    { name: "Blog", href: "/blog" },
+    { name: "Início", href: "/#inicio", scroll: true },
+    { name: "Sobre Nós", href: "/#sobre", scroll: true },
+    { name: "Serviços", href: "/services", scroll: false },
+    { name: "Contacto", href: "/#contacto", scroll: true },
+    { name: "Localizações", href: "/#localizacoes", scroll: true },
+    { name: "Blog", href: "/blog", scroll: false },
   ];
+
+  const handleNavClick = (e: React.MouseEvent, href: string, scroll: boolean) => {
+    if (scroll && href.startsWith("/#")) {
+      e.preventDefault();
+      const id = href.substring(2);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        setIsOpen(false);
+      } else {
+        // If element not found, navigate to home first
+        window.location.href = href;
+      }
+    }
+  };
 
   const isActive = (path: string) => location === path;
 
@@ -26,31 +41,24 @@ export function Navbar() {
         <div className="flex h-20 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="bg-primary p-2 rounded-lg">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight text-primary">
-                MICROCRÉDITO MAIS
-              </span>
+              <img src="/logo.png" alt="MicroCrédito Mais Logo" className="h-12 w-auto object-contain" />
             </Link>
           </div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.name}
                   href={link.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                    isActive(link.href)
-                      ? "text-primary bg-primary/5"
-                      : "text-gray-600 hover:text-primary hover:bg-gray-50"
-                  }`}
+                  onClick={(e) => handleNavClick(e, link.href, link.scroll)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${isActive(link.href)
+                    ? "text-primary bg-primary/5"
+                    : "text-gray-600 hover:text-primary hover:bg-gray-50"
+                    }`}
                 >
                   {link.name}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -102,18 +110,20 @@ export function Navbar() {
         <div className="md:hidden bg-white border-b border-border/50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.name}
                 href={link.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  isActive(link.href)
-                    ? "text-primary bg-primary/5"
-                    : "text-gray-700 hover:text-primary hover:bg-gray-50"
-                }`}
-                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${isActive(link.href)
+                  ? "text-primary bg-primary/5"
+                  : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                  }`}
+                onClick={(e) => {
+                  handleNavClick(e, link.href, link.scroll);
+                  if (!link.scroll) setIsOpen(false);
+                }}
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
             <div className="pt-4 pb-2 border-t border-gray-100 mt-4">
               {user ? (

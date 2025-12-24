@@ -1,109 +1,117 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, type LoginRequest } from "@shared/routes";
-import { type InsertUser } from "@shared/schema";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+
+interface User {
+  email: string;
+  fullName: string;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export function useAuth() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const queryClient = useQueryClient();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
-  const { data: user, isLoading, error } = useQuery({
-    queryKey: [api.auth.me.path],
-    queryFn: async () => {
-      const res = await fetch(api.auth.me.path, { credentials: "include" });
-      if (res.status === 401) return null;
-      if (!res.ok) throw new Error("Failed to fetch user");
-      return api.auth.me.responses[200].parse(await res.json());
-    },
-    retry: false,
-  });
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setIsLoading(false);
+  }, []);
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: LoginRequest) => {
-      const res = await fetch(api.auth.login.path, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+  const login = (data: LoginData) => {
+    setIsLoggingIn(true);
+    setTimeout(() => {
+      const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      const foundUser = storedUsers.find(
+        (u: any) => u.email === data.email && u.password === data.password
+      );
 
-      if (!res.ok) {
-        if (res.status === 401) throw new Error("Credenciais inválidas");
-        throw new Error("Erro ao fazer login");
+      if (foundUser) {
+        const userData = { email: foundUser.email, fullName: foundUser.fullName };
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+        toast({
+          title: "Bem-vindo de volta!",
+          description: `Olá, ${foundUser.fullName}`,
+        });
+        setLocation("/profile");
+      } else {
+        toast({
+          title: "Erro de autenticação",
+          description: "Email ou senha incorretos",
+          variant: "destructive",
+        });
       }
-      return api.auth.login.responses[200].parse(await res.json());
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData([api.auth.me.path], data);
-      toast({
-        title: "Bem-vindo de volta!",
-        description: `Olá, ${data.fullName}`,
-      });
-      setLocation("/profile");
-    },
-    onError: (error) => {
-      toast({
-        title: "Erro de autenticação",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+      setIsLoggingIn(false);
+    }, 800);
+  };
 
-  const registerMutation = useMutation({
-    mutationFn: async (data: InsertUser) => {
-      const res = await fetch(api.auth.register.path, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        if (res.status === 409) throw new Error("Email já registrado");
-        throw new Error("Erro ao criar conta");
+  const register = (data: RegisterData) => {
+    setIsRegistering(true);
+    setTimeout(() => {
+      if (data.password !== data.confirmPassword) {
+        toast({
+          title: "Erro no registro",
+          description: "As senhas não coincidem",
+          variant: "destructive",
+        });
+        setIsRegistering(false);
+        return;
       }
-      return api.auth.register.responses[201].parse(await res.json());
-    },
-    onSuccess: () => {
+
+      const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      if (storedUsers.some((u: any) => u.email === data.email)) {
+        toast({
+          title: "Erro no registro",
+          description: "Email já registrado",
+          variant: "destructive",
+        });
+        setIsRegistering(false);
+        return;
+      }
+
+      const newUser = {
+        email: data.email,
+        password: data.password,
+        fullName: data.email.split("@")[0],
+      };
+
+      storedUsers.push(newUser);
+      localStorage.setItem("users", JSON.stringify(storedUsers));
       toast({
         title: "Conta criada!",
         description: "Faça login para continuar.",
       });
       setLocation("/login");
-    },
-    onError: (error) => {
-      toast({
-        title: "Erro no registro",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      const res = await fetch(api.auth.logout.path, { method: "POST", credentials: "include" });
-      if (!res.ok) throw new Error("Failed to logout");
-    },
-    onSuccess: () => {
-      queryClient.setQueryData([api.auth.me.path], null);
-      setLocation("/");
-      toast({
-        title: "Sessão encerrada",
-        description: "Até logo!",
-      });
-    },
-  });
-
-  return {
-    user,
-    isLoading,
-    login: loginMutation.mutate,
-    isLoggingIn: loginMutation.isPending,
-    register: registerMutation.mutate,
-    isRegistering: registerMutation.isPending,
-    logout: logoutMutation.mutate,
+      setIsRegistering(false);
+    }, 800);
   };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setLocation("/");
+    toast({
+      title: "Sessão encerrada",
+      description: "Até logo!",
+    });
+  };
+
+  return { user, isLoading, login, isLoggingIn, register, isRegistering, logout };
 }

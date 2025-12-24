@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 
 export default function Blog() {
   const posts = [
@@ -30,7 +31,7 @@ export default function Blog() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
+
       <div className="bg-primary py-20 text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-display font-bold mb-4">Blog & Dicas</h1>
@@ -51,7 +52,9 @@ export default function Blog() {
                 <p className="text-gray-600 mb-4 flex-1 text-sm">{post.excerpt}</p>
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
                   <span className="text-xs text-gray-400">{post.date}</span>
-                  <Button variant="link" className="text-primary p-0 h-auto">Ler Mais</Button>
+                  <Link href={`/blog/post${index + 1}`}>
+                    <Button variant="link" className="text-primary p-0 h-auto">Ler Mais</Button>
+                  </Link>
                 </div>
               </div>
             </div>

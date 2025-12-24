@@ -8,14 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div>
             <div className="flex items-center space-x-2 mb-6">
-              <div className="bg-primary p-1.5 rounded-lg">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight text-white">
-                MICROCRÉDITO MAIS
-              </span>
+              <img src="/logo.png" alt="MicroCrédito Mais Logo" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-gray-400 leading-relaxed mb-6">
               Impulsionando o futuro de Moçambique com soluções financeiras rápidas, seguras e transparentes.
@@ -36,11 +29,12 @@ export function Footer() {
           <div>
             <h3 className="font-display font-bold text-lg mb-6">Links Rápidos</h3>
             <ul className="space-y-4">
-              <li><Link href="/about" className="text-gray-400 hover:text-primary transition-colors">Sobre Nós</Link></li>
+              <li><a href="/#sobre" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">Sobre Nós</a></li>
               <li><Link href="/services" className="text-gray-400 hover:text-primary transition-colors">Nossos Serviços</Link></li>
-              <li><Link href="/simulator" className="text-gray-400 hover:text-primary transition-colors">Simulador</Link></li>
+              <li><a href="/#inicio" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">Simulador</a></li>
+              <li><a href="/#localizacoes" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">Localizações</a></li>
               <li><Link href="/blog" className="text-gray-400 hover:text-primary transition-colors">Blog & Dicas</Link></li>
-              <li><Link href="/contact" className="text-gray-400 hover:text-primary transition-colors">Fale Conosco</Link></li>
+              <li><a href="/#contacto" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">Fale Conosco</a></li>
             </ul>
           </div>
 

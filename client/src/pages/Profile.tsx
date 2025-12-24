@@ -29,18 +29,18 @@ export default function Profile() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
+
       <div className="flex-1 container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-display font-bold text-gray-900">Minha Conta</h1>
             <p className="text-gray-500">Gerencie seus pedidos de crédito e informações</p>
           </div>
-          <Link href="/simulator">
+          <a href="/#inicio">
             <Button className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 gap-2">
               <Plus className="w-4 h-4" /> Solicitar Novo Crédito
             </Button>
-          </Link>
+          </a>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -60,14 +60,6 @@ export default function Profile() {
               <div>
                 <label className="text-xs font-semibold text-gray-500 uppercase">Email</label>
                 <p className="font-medium text-gray-900">{user.email}</p>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase">NUIT</label>
-                <p className="font-medium text-gray-900">{user.nuit || "Não informado"}</p>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase">Endereço</label>
-                <p className="font-medium text-gray-900">{user.address || "Não informado"}</p>
               </div>
             </CardContent>
           </Card>
@@ -102,7 +94,7 @@ export default function Profile() {
                           {loan.months} meses • Total a pagar: {Number(loan.totalPayable).toLocaleString()} MTN
                         </p>
                       </div>
-                      
+
                       <div className="flex items-center text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-lg h-fit self-start sm:self-center">
                         <Clock className="w-4 h-4 mr-2" />
                         {new Date(loan.createdAt).toLocaleDateString('pt-MZ')}
@@ -121,9 +113,9 @@ export default function Profile() {
                   <p className="text-gray-500 max-w-sm mt-2 mb-6">
                     Você ainda não tem pedidos de crédito registrados. Use o simulador para fazer seu primeiro pedido.
                   </p>
-                  <Link href="/simulator">
+                  <a href="/#inicio">
                     <Button>Simular Crédito Agora</Button>
-                  </Link>
+                  </a>
                 </CardContent>
               </Card>
             )}

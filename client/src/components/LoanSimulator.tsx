@@ -10,7 +10,7 @@ import { Link, useLocation } from "wouter";
 
 export function LoanSimulator() {
   const [amount, setAmount] = useState(10000);
-  const [months, setMonths] = useState(6);
+  const [months, setMonths] = useState(3);
   const [total, setTotal] = useState(0);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const { user } = useAuth();
@@ -31,9 +31,9 @@ export function LoanSimulator() {
     }
 
     createLoan({
-      amount: amount.toString(),
+      amount,
       months,
-      totalPayable: total.toString()
+      totalPayable: total
     });
   };
 
@@ -74,10 +74,9 @@ export function LoanSimulator() {
               <SelectValue placeholder="Selecione o prazo" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="1">1 Mês</SelectItem>
+              <SelectItem value="2">2 Meses</SelectItem>
               <SelectItem value="3">3 Meses</SelectItem>
-              <SelectItem value="6">6 Meses</SelectItem>
-              <SelectItem value="9">9 Meses</SelectItem>
-              <SelectItem value="12">12 Meses</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -89,19 +88,19 @@ export function LoanSimulator() {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Mensalidade Estimada</span>
-            <span className="font-bold text-2xl text-secondary">{monthlyPayment.toLocaleString(undefined, {maximumFractionDigits: 2})} MTN</span>
+            <span className="font-bold text-2xl text-secondary">{monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })} MTN</span>
           </div>
         </div>
 
-        <Button 
-          onClick={handleSubmit} 
+        <Button
+          onClick={handleSubmit}
           disabled={isCreating}
           className="w-full py-6 text-lg font-semibold bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25 transition-all duration-300 transform hover:-translate-y-0.5"
         >
           {isCreating ? "Processando..." : "Solicitar Crédito"}
           {!isCreating && <ArrowRight className="w-5 h-5 ml-2" />}
         </Button>
-        
+
         {!user && (
           <p className="text-center text-xs text-gray-500">
             Você será redirecionado para login/registro.

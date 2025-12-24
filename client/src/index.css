@@ -6,14 +6,17 @@
 
 :root {
   /* Corporate Blue Palette */
-  --primary: 216 100% 40%;     /* #0052CC */
+  --primary: 216 100% 40%;
+  /* #0052CC */
   --primary-foreground: 0 0% 100%;
-  
-  --secondary: 205 90% 60%;    /* #3FA9F5 */
+
+  --secondary: 205 90% 60%;
+  /* #3FA9F5 */
   --secondary-foreground: 0 0% 100%;
 
   --background: 0 0% 100%;
-  --foreground: 0 0% 10%;      /* #1A1A1A */
+  --foreground: 0 0% 10%;
+  /* #1A1A1A */
 
   --card: 0 0% 100%;
   --card-foreground: 0 0% 10%;
@@ -71,11 +74,19 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Outfit', sans-serif;
   }
 }
@@ -93,6 +104,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

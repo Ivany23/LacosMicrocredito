@@ -8,42 +8,47 @@ export default function Services() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
-      <div className="bg-secondary py-20 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-display font-bold mb-4">Nossos Serviços</h1>
-          <p className="text-white/90 max-w-2xl mx-auto">Soluções flexíveis desenhadas para atender às suas necessidades específicas.</p>
+
+      <div className="relative bg-secondary py-32 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: 'url("/services-header.png")' }}
+        />
+        <div className="absolute inset-0 bg-secondary/80 z-10" />
+        <div className="container relative z-20 mx-auto px-4 text-center">
+          <h1 className="text-5xl font-display font-bold mb-6">Nossos Serviços</h1>
+          <p className="text-white/90 text-xl max-w-2xl mx-auto leading-relaxed">Soluções financeiras desenhadas para impulsionar seus sonhos e negócios.</p>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-16">
         <div className="grid gap-12">
-          <ServiceRow 
+          <ServiceRow
             icon={<Briefcase className="w-12 h-12 text-primary" />}
             title="Crédito para Negócios"
             description="Capital de giro para micro e pequenos empreendedores. Aumente seu estoque, reforme seu estabelecimento ou compre novos equipamentos. Aprovação rápida para não perder oportunidades de negócio."
-            features={["De 5.000 a 100.000 MTN", "Prazos até 12 meses", "Sem garantia real"]}
-            image="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2874&auto=format&fit=crop"
+            features={["De 5.000 a 100.000 MTN", "Prazos até 3 meses", "Sem garantia real"]}
+            image="/service-business.png"
           />
-          
-          <ServiceRow 
+
+          <ServiceRow
             icon={<Home className="w-12 h-12 text-primary" />}
             title="Crédito Pessoal & Lar"
             description="Realize pequenas reformas, compre eletrodomésticos ou resolva imprevistos familiares. Um crédito simples, direto na sua conta, para usar como quiser."
             features={["Aprovação em 24h", "Processo 100% digital", "Taxas competitivas"]}
-            image="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2873&auto=format&fit=crop"
+            image="/service-personal.png"
             reversed
           />
-          
-          <ServiceRow 
+
+          <ServiceRow
             icon={<Tractor className="w-12 h-12 text-primary" />}
             title="Microcrédito Agrícola"
             description="Apoio especial para pequenos agricultores. Financie sementes, fertilizantes e pequenas ferramentas para aumentar sua produção e garantir uma colheita melhor."
             features={["Prazos ajustados à colheita", "Consultoria básica", "Apoio ao campo"]}
-            image="https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=2787&auto=format&fit=crop"
+            image="/service-agro.png"
           />
         </div>
-        
+
         <div className="mt-20 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-6">Não encontrou o que procura?</h3>
           <Link href="/contact">
@@ -77,11 +82,11 @@ function ServiceRow({ icon, title, description, features, image, reversed = fals
             </li>
           ))}
         </ul>
-        <Link href="/simulator">
+        <a href="/#inicio">
           <Button className="mt-4 bg-primary hover:bg-primary/90">
             Simular Este Crédito <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
-        </Link>
+        </a>
       </div>
     </div>
   );

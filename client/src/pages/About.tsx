@@ -5,7 +5,7 @@ export default function About() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
+
       <div className="bg-primary py-20 text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-display font-bold mb-4">Sobre Nós</h1>
@@ -27,9 +27,9 @@ export default function About() {
             </div>
             <div className="relative h-64 md:h-auto">
               {/* Unsplash image: Maputo city landscape or team */}
-              <img 
-                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2940&auto=format&fit=crop" 
-                alt="Nossa missão" 
+              <img
+                src="/about-team.png"
+                alt="Nossa missão"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
@@ -39,7 +39,7 @@ export default function About() {
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <Card title="Visão" content="Ser a referência em microcrédito digital em Moçambique, reconhecida pela excelência no atendimento e inovação tecnológica." />
           <Card title="Valores" content="Transparência, Integridade, Inovação, Responsabilidade Social e Foco no Cliente são os pilares que guiam todas as nossas decisões." />
-          <Card title="Impacto" content="Já ajudamos mais de 5.000 famílias e pequenos empreendedores a alcançarem seus objetivos financeiros com segurança." />
+          <Card title="Compromisso" content="Comprometidos em ajudar famílias e pequenos empreendedores moçambicanos a alcançarem seus objetivos financeiros com segurança e transparência." />
         </div>
 
         <div className="text-center">

@@ -1,85 +1,112 @@
 import { Navbar } from "@/components/Navbar";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginRequest } from "@shared/schema";
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Link } from "wouter";
+import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 
 export default function Login() {
-  const { login, isLoggingIn } = useAuth();
-  
-  const form = useForm<LoginRequest>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: ""
-    }
-  });
+    const { login, isLoggingIn } = useAuth();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const onSubmit = (data: LoginRequest) => {
-    login(data);
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        login({ email, password });
+    };
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar />
-      <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-xl border-gray-100">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center text-primary">Bem-vindo de volta</CardTitle>
-            <CardDescription className="text-center">
-              Insira seus dados para acessar sua conta
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="seu@email.com" {...field} className="h-11" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Senha</FormLabel>
-                      <FormControl>
-                        <Input type="password" placeholder="••••••••" {...field} className="h-11" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full h-11 text-base bg-primary hover:bg-primary/90" disabled={isLoggingIn}>
-                  {isLoggingIn ? "Entrando..." : "Entrar"}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-4 text-center text-sm text-gray-600">
-            <p>
-              Ainda não tem conta?{" "}
-              <Link href="/register" className="text-primary font-semibold hover:underline">
-                Criar conta
-              </Link>
-            </p>
-          </CardFooter>
-        </Card>
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
+            <Navbar />
+            <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+                {/* Decorative elements */}
+                <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+
+                <div className="w-full max-w-md relative z-10">
+                    <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 md:p-10 transform transition-all hover:shadow-3xl">
+                        <div className="text-center mb-8">
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-2xl mb-4 shadow-lg">
+                                <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-2">
+                                Bem-vindo de volta
+                            </h1>
+                            <p className="text-gray-600">
+                                Entre na sua conta para continuar
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                    <Mail className="w-4 h-4 text-primary" />
+                                    Email
+                                </label>
+                                <div className="relative">
+                                    <Input
+                                        type="email"
+                                        placeholder="seu@email.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        className="h-12 pl-4 pr-4 bg-white/50 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                    <Lock className="w-4 h-4 text-primary" />
+                                    Senha
+                                </label>
+                                <div className="relative">
+                                    <Input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        className="h-12 pl-4 pr-4 bg-white/50 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <Button
+                                type="submit"
+                                disabled={isLoggingIn}
+                                className="w-full h-12 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white font-semibold rounded-xl shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                            >
+                                {isLoggingIn ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                        Entrando...
+                                    </>
+                                ) : (
+                                    <>
+                                        Entrar
+                                        <ArrowRight className="w-5 h-5" />
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+
+                        <div className="mt-8 text-center">
+                            <p className="text-gray-600">
+                                Ainda não tem conta?{" "}
+                                <Link
+                                    href="/register"
+                                    className="text-primary font-semibold hover:text-blue-600 transition-colors inline-flex items-center gap-1"
+                                >
+                                    Criar conta
+                                    <ArrowRight className="w-4 h-4" />
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
